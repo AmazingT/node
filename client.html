@@ -1,0 +1,75 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+	<meta charset="UTF-8">
+	<title>Document</title>
+</head>
+<body>
+	<form action="http://127.0.0.1:8080/login" method="post">
+		<div class="input-group">
+			用户名：<input type="text" name="username" placeholder="请输入用户名" />
+		</div>
+		<div class="input-group">
+			密码：<input type="password" name="password" placeholder="请输入密码" />
+		</div>
+		<div class="input-group">
+			性别：<input type="radio" name="sex" value="男" />男
+				 <input type="radio" name="sex" value="女" />女
+		</div>
+		<div class="input-group">
+			爱好：<input type="checkbox" name="checkbox" value="篮球" />篮球
+				 <input type="checkbox" name="checkbox" value="足球">足球
+				 <input type="checkbox" name="checkbox" value="冰球">冰球
+		</div>
+		<div class="input-group">
+			<input type="submit" value="登 录" />
+		</div>
+	</form>
+	
+	<script src="https://cdn.bootcss.com/jquery/3.2.1/jquery.min.js"></script>
+	<script>
+		const hostname = '127.0.0.1'
+		const port = 8080
+
+		// function jsonpCallback(data) {
+		// 	// console.log(data)
+		// 	data.anArray.forEach((item) => {
+		// 		console.log(item)
+		// 	})
+
+		// 	console.log(data.anObject['item1'])
+		// 	console.log(data.anObject['item2'])
+
+		// 	// for (var k in data.anObject) {
+		// 	// 	console.log(k + ':' + data.anObject[k])
+		// 	// }
+		// }
+
+		$(function() {
+			$('button').on('click', function() {
+				var url = 'http://' + hostname + ":" + port
+
+				// ajax的JSONP跨域请求后端必须以此："jsonpCallback(" + data + ")"格式返回(必须有回调函数名)
+				$.ajax({
+					url: url,
+					// data: $('form')[0].serialize(),
+					dataType: 'jsonp',
+					// jsonp: 'jsonpCallback', // jsonp: ''用来指定回调函数名，该函数名出现在URL地址后面xxx?jsonpCallback=。使用此段代码时，需在外部定义jsonpCallback函数接收数据
+					jsonpCallback: 'jsonpCallback', // 不使用上段代码，使用此段代码时可以不用在外部定义函数，直接在success函数中接收数据。
+					success: function(data) {
+						data.anArray.forEach((item) => {
+							console.log(item)
+						})
+
+						console.log(data.anObject['item1'])
+						console.log(data.anObject['item2'])
+					},
+					error: function(err) {
+						console.log(err.status)
+					}
+				})
+			})
+		})
+	</script>
+</body>
+</html>
